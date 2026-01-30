@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using EasyArchive.Data;
+using EasyArchive.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using EasyArchive.Data;
-using EasyArchive.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace EasyArchive.Controllers
 {
@@ -19,7 +20,7 @@ namespace EasyArchive.Controllers
             _context = context;
         }
 
-        // GET: Emprestimoes
+        // GET: Emprestimos
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Emprestimos.Include(e => e.Aluno).Include(e => e.Livro);

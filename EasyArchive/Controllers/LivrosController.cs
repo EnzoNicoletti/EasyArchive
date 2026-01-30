@@ -25,6 +25,26 @@ namespace EasyArchive.Controllers
             return View(await _context.Livros.ToListAsync());
         }
 
+        // GET: Buscar
+        [HttpGet] // Informar o Tipo da Action
+
+        public async Task<IActionResult> Buscar(string? termo)
+        {
+            // Guardar o termo da busca em uma variável ViewData
+            ViewData["termoBusca"] = termo;
+
+            // Listar todos os alunos cadastrados no banco de dados
+            List<Livro> listaLivro = await _context.Livros.ToListAsync();
+
+            // Filtrar somente os alunos que contem o termo procurado no nome da conta
+            if (!string.IsNullOrEmpty(termo))
+            {
+                listaLivro = await _context.Livros.Where(
+                     p => p.Titulo.ToLower().Contains(termo) || p.Autor.ToString().Contains(termo) || p.Editora.Contains(termo) || p.AnoPublicacao.ToString().Contains(termo)).ToListAsync();
+            }
+            return View("Index", listaLivro);
+        }
+
         // GET: Livros/Details/5
         public async Task<IActionResult> Details(int? id)
         {

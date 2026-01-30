@@ -9,7 +9,8 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+
+<table class="table text-center">
     <thead>
         <tr>
             <th>
@@ -19,35 +20,41 @@
                 @Html.DisplayNameFor(model => model.Livro)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DataEmprestimo)
+                Data do Empréstimo
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DataDevolucao)
+                Data de Devolução
             </th>
-            <th></th>
+            <th>
+                Emprestado?
+            </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Aluno.Curso)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Livro.Autor)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataEmprestimo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataDevolucao)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.EmprestimoId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.EmprestimoId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.EmprestimoId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Aluno.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Livro.Titulo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataEmprestimo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataDevolucao)
+                </td>
+                <td class="text-cen">
+                    @Html.DisplayFor(modelItem => item.Livro.Emprestado)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.EmprestimoId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.EmprestimoId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.EmprestimoId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

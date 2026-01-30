@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using EasyArchive.Data;
+using EasyArchive.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using EasyArchive.Data;
-using EasyArchive.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace EasyArchive.Controllers
 {
@@ -23,6 +24,26 @@ namespace EasyArchive.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.Alunos.ToListAsync());
+        }
+
+        // GET: Buscar
+        [HttpGet] // Informar o Tipo da Action
+
+        public async Task<IActionResult> Buscar(string? termo)
+        {
+            // Guardar o termo da busca em uma variável ViewData
+            ViewData["termoBusca"] = termo;
+
+            // Listar todos os alunos cadastrados no banco de dados
+            List<Aluno> listaAluno = await _context.Alunos.ToListAsync();
+
+            // Filtrar somente os alunos que contem o termo procurado no nome da conta
+            if (!string.IsNullOrEmpty(termo))
+            {
+                listaAluno = await _context.Alunos.Where(
+                     p => p.Nome.ToLower().Contains(termo) || p.RM.ToString().Contains(termo) || p.Curso.ToLower().Contains(termo)).ToListAsync();
+            }
+            return View("Index", listaAluno);
         }
 
         // GET: Alunos/Details/5
