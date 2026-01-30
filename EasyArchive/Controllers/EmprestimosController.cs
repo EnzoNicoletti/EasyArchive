@@ -166,5 +166,7 @@ namespace EasyArchive.Controllers
         {
             return _context.Emprestimos.Any(e => e.EmprestimoId == id);
         }
+
     }
+
 }
