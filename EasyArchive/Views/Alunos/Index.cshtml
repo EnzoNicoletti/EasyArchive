@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<EasyArchive.Models.Aluno>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Index - Alunos";
 }
 
-<h1>Index</h1>
+<h1>Alunos</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-conf">Registrar Novo</a>
 </p>
 
 <form asp-controller="Alunos" asp-action="Buscar" method="get" class="mb-3">
@@ -16,7 +16,7 @@
         <button class="btn btn-outline-secondary" type="submit">Buscar</button>
     </div>
 </form>
-<table class="table">
+<table class="table text-center">
     <thead>
         <tr>
             <th>
@@ -45,9 +45,9 @@
                     @Html.DisplayFor(modelItem => item.RM)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.AlunoId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.AlunoId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.AlunoId">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.AlunoId" class="btn btn-outline-primary"><i class="bi bi-pencil-square"></i> Editar</a> |
+                    <a asp-action="Details" asp-route-id="@item.AlunoId" class="btn btn-outline-info"><i class="bi bi-info-square"></i> Detalhes</a> |
+                    <a asp-action="Delete" asp-route-id="@item.AlunoId" class="btn btn-outline-danger"><i class="bi bi-trash"></i> Deletar</a>
                 </td>
             </tr>
         }

@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<EasyArchive.Models.Emprestimo>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Index - Empréstimos";
 }
 
-<h1>Index</h1>
+<h1>Empréstimos</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-conf">Registrar Novo</a>
 </p>
 
 <table class="table text-center">
@@ -50,9 +50,9 @@
                     @Html.DisplayFor(modelItem => item.Livro.Emprestado)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.EmprestimoId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.EmprestimoId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.EmprestimoId">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.EmprestimoId" class="btn btn-outline-primary"><i class="bi bi-pencil-square"></i> Editar</a> |
+                    <a asp-action="Details" asp-route-id="@item.EmprestimoId" class="btn btn-outline-info"><i class="bi bi-info-square"></i> Detalhes</a> |
+                    <a asp-action="Delete" asp-route-id="@item.EmprestimoId" class="btn btn-outline-danger"><i class="bi bi-trash"></i> Deletar</a>
                 </td>
             </tr>
         }

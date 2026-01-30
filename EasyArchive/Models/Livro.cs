@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace EasyArchive.Models
 {
@@ -12,6 +13,7 @@ namespace EasyArchive.Models
         [Required]
         public string? Editora { get; set; }
         [Required]
+        [Display(Name = "Ano de Publicação")]
         public DateOnly AnoPublicacao { get; set; }
         public bool Emprestado { get; set; }
     }
