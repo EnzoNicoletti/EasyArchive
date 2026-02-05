@@ -29,34 +29,6 @@ namespace EasyArchive.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Filtro
-        public async Task<IActionResult> Filtro(int? alunoId)
-        {
-
-
-            // Listar todas as movimentações do banco
-            List<Emprestimo> emprestimos = await _context.Emprestimos
-                .Include(m => m.Aluno)
-                .Include(m => m.Livro)
-                .ToListAsync();
-
-            // Se o usuário selecionou um Aluno, filtrar por ele
-            if (alunoId.HasValue)
-            {
-                emprestimos = await _context.Emprestimos
-                    .Include(m => m.Aluno)
-                    .Include(m => m.Livro)
-                    .Where(m => m.AlunoId == alunoId.Value)
-                    .ToListAsync();
-            }
-
-            // Preenche o dropdown com todos os Alunos
-            ViewBag.Alunos = await _context.Alunos
-                .OrderBy(c => c.Nome)
-                .ToListAsync();
-            return View("Index", emprestimos);
-        }
-
         // GET: Emprestimos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -102,6 +74,14 @@ namespace EasyArchive.Controllers
                 if (livro.Emprestado == true)
                 {
                     ViewData["Alerta"] = "O livro" + livro.Titulo + "já foi emprestado ao aluno" + aluno.Nome;
+                    ViewData["AlunoId"] = new SelectList(_context.Alunos, "AlunoId", "Curso", emprestimo.AlunoId);
+                    ViewData["LivroId"] = new SelectList(_context.Livros, "LivroId", "Autor", emprestimo.LivroId);
+                    return View(emprestimo);
+                }
+
+                if (emprestimo.DataDevolucao < DateOnly.FromDateTime(DateTime.Now))
+                {
+                    ViewData["Alerta"] = "Selecione uma data de devolução válida";
                     ViewData["AlunoId"] = new SelectList(_context.Alunos, "AlunoId", "Curso", emprestimo.AlunoId);
                     ViewData["LivroId"] = new SelectList(_context.Livros, "LivroId", "Autor", emprestimo.LivroId);
                     return View(emprestimo);

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace EasyArchive.Data.Migrations
+namespace EasyArchive.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -40,13 +40,14 @@ namespace EasyArchive.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("RM")
+                    b.Property<string>("RM")
+                        .IsRequired()
                         .HasMaxLength(4)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(4)");
 
                     b.HasKey("AlunoId");
 
-                    b.ToTable("Alunos");
+                    b.ToTable("Alunos", (string)null);
                 });
 
             modelBuilder.Entity("EasyArchive.Models.Emprestimo", b =>
@@ -75,7 +76,7 @@ namespace EasyArchive.Data.Migrations
 
                     b.HasIndex("LivroId");
 
-                    b.ToTable("Emprestimos");
+                    b.ToTable("Emprestimos", (string)null);
                 });
 
             modelBuilder.Entity("EasyArchive.Models.Livro", b =>
@@ -87,30 +88,29 @@ namespace EasyArchive.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LivroId"));
 
                     b.Property<int>("AnoPublicacao")
-                        .HasMaxLength(4)
                         .HasColumnType("int");
 
                     b.Property<string>("Autor")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Editora")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<bool>("Emprestado")
                         .HasColumnType("bit");
 
                     b.Property<string>("Titulo")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("LivroId");
 
-                    b.ToTable("Livros");
+                    b.ToTable("Livros", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

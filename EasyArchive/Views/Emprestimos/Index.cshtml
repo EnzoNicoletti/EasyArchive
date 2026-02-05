@@ -10,17 +10,6 @@
     <a asp-action="Create">Create New</a>
 </p>
 
-<form asp-action="Filtro" method="get">
-    <select name="AlunoId" class="form-select">
-        <option value="">Todas as contas financeiras</option>
-        @foreach (var Aluno in ViewBag.Alunos)
-        {
-            <option value="@Aluno.AlunoId">@Aluno.Nome</option>
-        }
-    </select>
-    <button type="submit" class="btn btn-primary mt-2">Filtrar</button>
-</form>
-
 <table class="table text-center">
     <thead>
         <tr>

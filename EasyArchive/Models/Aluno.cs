@@ -14,9 +14,10 @@ namespace EasyArchive.Models
         [Display(Name = "Curso do Aluno")]
         public string? Curso { get; set; }
         [Required(ErrorMessage = "O RM do aluno é obrigatório")]
-        [MaxLength(4, ErrorMessage = "O RM do aluno tem que ter exatamente 4 dígitos.")]
-        [MinLength(4, ErrorMessage = "O RM do aluno tem que ter exatamente 4 dígitos.")]
+        [StringLength(4, MinimumLength = 4, ErrorMessage = "O RM tem que ter 4 dígitos")]
+        [RegularExpression(@"^\d{4}$", ErrorMessage = "O RM deve conter apenas números")]
         [Display(Name = "RM do Aluno")]
-        public int RM { get; set; }
+        public string? RM { get; set; }
     }
 }
+ 
