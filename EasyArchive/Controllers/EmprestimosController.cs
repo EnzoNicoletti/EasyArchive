@@ -1,5 +1,6 @@
 ﻿using EasyArchive.Data;
 using EasyArchive.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace EasyArchive.Controllers
 {
+    [Authorize]
     public class EmprestimosController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -25,6 +27,34 @@ namespace EasyArchive.Controllers
         {
             var applicationDbContext = _context.Emprestimos.Include(e => e.Aluno).Include(e => e.Livro);
             return View(await applicationDbContext.ToListAsync());
+        }
+
+        // GET: Filtro
+        public async Task<IActionResult> Filtro(int? alunoId)
+        {
+
+
+            // Listar todas as movimentações do banco
+            List<Emprestimo> emprestimos = await _context.Emprestimos
+                .Include(m => m.Aluno)
+                .Include(m => m.Livro)
+                .ToListAsync();
+
+            // Se o usuário selecionou um Aluno, filtrar por ele
+            if (alunoId.HasValue)
+            {
+                emprestimos = await _context.Emprestimos
+                    .Include(m => m.Aluno)
+                    .Include(m => m.Livro)
+                    .Where(m => m.AlunoId == alunoId.Value)
+                    .ToListAsync();
+            }
+
+            // Preenche o dropdown com todos os Alunos
+            ViewBag.Alunos = await _context.Alunos
+                .OrderBy(c => c.Nome)
+                .ToListAsync();
+            return View("Index", emprestimos);
         }
 
         // GET: Emprestimos/Details/5
@@ -64,6 +94,20 @@ namespace EasyArchive.Controllers
         {
             if (ModelState.IsValid)
             {
+                emprestimo.DataEmprestimo = DateTime.Today;
+
+                var aluno = _context.Alunos.FirstOrDefault(p => p.AlunoId == emprestimo.AlunoId);
+                var livro = await _context.Livros.FirstOrDefaultAsync(l => l.LivroId == emprestimo.LivroId);
+
+                if (livro.Emprestado == true)
+                {
+                    ViewData["Alerta"] = "O livro" + livro.Titulo + "já foi emprestado ao aluno" + aluno.Nome;
+                    ViewData["AlunoId"] = new SelectList(_context.Alunos, "AlunoId", "Curso", emprestimo.AlunoId);
+                    ViewData["LivroId"] = new SelectList(_context.Livros, "LivroId", "Autor", emprestimo.LivroId);
+                    return View(emprestimo);
+                }
+
+                livro.Emprestado = true;
                 _context.Add(emprestimo);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

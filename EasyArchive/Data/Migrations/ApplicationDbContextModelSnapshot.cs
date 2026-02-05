@@ -32,13 +32,16 @@ namespace EasyArchive.Data.Migrations
 
                     b.Property<string>("Curso")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("RM")
+                        .HasMaxLength(4)
                         .HasColumnType("int");
 
                     b.HasKey("AlunoId");
@@ -60,8 +63,8 @@ namespace EasyArchive.Data.Migrations
                     b.Property<DateOnly>("DataDevolucao")
                         .HasColumnType("date");
 
-                    b.Property<DateOnly>("DataEmprestimo")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("DataEmprestimo")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("LivroId")
                         .HasColumnType("int");
@@ -83,23 +86,27 @@ namespace EasyArchive.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LivroId"));
 
-                    b.Property<DateOnly>("AnoPublicacao")
-                        .HasColumnType("date");
+                    b.Property<int>("AnoPublicacao")
+                        .HasMaxLength(4)
+                        .HasColumnType("int");
 
                     b.Property<string>("Autor")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Editora")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("Emprestado")
                         .HasColumnType("bit");
 
                     b.Property<string>("Titulo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("LivroId");
 

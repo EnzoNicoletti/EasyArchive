@@ -1,5 +1,6 @@
 ﻿using EasyArchive.Data;
 using EasyArchive.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace EasyArchive.Controllers
 {
+    [Authorize]
     public class AlunosController : Controller
     {
         private readonly ApplicationDbContext _context;
