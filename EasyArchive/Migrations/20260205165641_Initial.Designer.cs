@@ -9,10 +9,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace EasyArchive.Data.Migrations
+namespace EasyArchive.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260130132003_Initial")]
+    [Migration("20260205165641_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -35,18 +35,22 @@ namespace EasyArchive.Data.Migrations
 
                     b.Property<string>("Curso")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("RM")
-                        .HasColumnType("int");
+                    b.Property<string>("RM")
+                        .IsRequired()
+                        .HasMaxLength(4)
+                        .HasColumnType("nvarchar(4)");
 
                     b.HasKey("AlunoId");
 
-                    b.ToTable("Alunos");
+                    b.ToTable("Alunos", (string)null);
                 });
 
             modelBuilder.Entity("EasyArchive.Models.Emprestimo", b =>
@@ -63,8 +67,8 @@ namespace EasyArchive.Data.Migrations
                     b.Property<DateOnly>("DataDevolucao")
                         .HasColumnType("date");
 
-                    b.Property<DateOnly>("DataEmprestimo")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("DataEmprestimo")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("LivroId")
                         .HasColumnType("int");
@@ -75,7 +79,7 @@ namespace EasyArchive.Data.Migrations
 
                     b.HasIndex("LivroId");
 
-                    b.ToTable("Emprestimos");
+                    b.ToTable("Emprestimos", (string)null);
                 });
 
             modelBuilder.Entity("EasyArchive.Models.Livro", b =>
@@ -86,24 +90,30 @@ namespace EasyArchive.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LivroId"));
 
-                    b.Property<DateOnly>("AnoPublicacao")
-                        .HasColumnType("date");
+                    b.Property<int>("AnoPublicacao")
+                        .HasColumnType("int");
 
                     b.Property<string>("Autor")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Editora")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<bool>("Emprestado")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Titulo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("LivroId");
 
-                    b.ToTable("Livros");
+                    b.ToTable("Livros", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

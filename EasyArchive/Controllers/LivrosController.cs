@@ -1,15 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using EasyArchive.Data;
+using EasyArchive.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using EasyArchive.Data;
-using EasyArchive.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace EasyArchive.Controllers
 {
+    [Authorize]
     public class LivrosController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -33,10 +35,10 @@ namespace EasyArchive.Controllers
             // Guardar o termo da busca em uma variável ViewData
             ViewData["termoBusca"] = termo;
 
-            // Listar todos os alunos cadastrados no banco de dados
+            // Listar todos os livros cadastrados no banco de dados
             List<Livro> listaLivro = await _context.Livros.ToListAsync();
 
-            // Filtrar somente os alunos que contem o termo procurado no nome da conta
+            // Filtrar somente os livros que contem o termo procurado no form
             if (!string.IsNullOrEmpty(termo))
             {
                 listaLivro = await _context.Livros.Where(
@@ -74,7 +76,7 @@ namespace EasyArchive.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("LivroId,Titulo,Autor,Editora,AnoPublicacao")] Livro livro)
+        public async Task<IActionResult> Create([Bind("LivroId,Titulo,Autor,Editora,AnoPublicacao,Emprestado")] Livro livro)
         {
             if (ModelState.IsValid)
             {

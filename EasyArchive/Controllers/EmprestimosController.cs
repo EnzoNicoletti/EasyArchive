@@ -1,5 +1,6 @@
 ﻿using EasyArchive.Data;
 using EasyArchive.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace EasyArchive.Controllers
 {
+    [Authorize]
     public class EmprestimosController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -64,6 +66,28 @@ namespace EasyArchive.Controllers
         {
             if (ModelState.IsValid)
             {
+                emprestimo.DataEmprestimo = DateTime.Today;
+
+                var aluno = _context.Alunos.FirstOrDefault(p => p.AlunoId == emprestimo.AlunoId);
+                var livro = await _context.Livros.FirstOrDefaultAsync(l => l.LivroId == emprestimo.LivroId);
+
+                if (livro.Emprestado == true)
+                {
+                    ViewData["Alerta"] = "O livro" + livro.Titulo + "já foi emprestado ao aluno" + aluno.Nome;
+                    ViewData["AlunoId"] = new SelectList(_context.Alunos, "AlunoId", "Curso", emprestimo.AlunoId);
+                    ViewData["LivroId"] = new SelectList(_context.Livros, "LivroId", "Autor", emprestimo.LivroId);
+                    return View(emprestimo);
+                }
+
+                if (emprestimo.DataDevolucao < DateOnly.FromDateTime(DateTime.Now))
+                {
+                    ViewData["Alerta"] = "Selecione uma data de devolução válida";
+                    ViewData["AlunoId"] = new SelectList(_context.Alunos, "AlunoId", "Curso", emprestimo.AlunoId);
+                    ViewData["LivroId"] = new SelectList(_context.Livros, "LivroId", "Autor", emprestimo.LivroId);
+                    return View(emprestimo);
+                }
+
+                livro.Emprestado = true;
                 _context.Add(emprestimo);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
